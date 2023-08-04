@@ -14,6 +14,7 @@
 
 import os
 import subprocess
+import shlex
 from urllib.error import HTTPError
 from urllib.request import urlretrieve
 
