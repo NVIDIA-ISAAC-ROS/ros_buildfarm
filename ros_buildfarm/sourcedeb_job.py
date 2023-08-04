@@ -39,7 +39,7 @@ def get_sources(
 
     pkg_version = repo.release_repository.version
     tag = _get_source_tag(
-        rosdistro_name, pkg_name, pkg_version, os_name, os_code_name)
+        rosdistro_name, pkg_name, pkg_version, os_name, 'jammy')
 
     cmd = [
         'git', 'clone',
