@@ -51,6 +51,10 @@ def get_sources(
     print("Invoking '%s'" % ' '.join(cmd))
     subprocess.check_call(cmd)
 
+    cmd = shlex.split(f"find {sources_dir} -type f -exec sed -i"+" 's/jammy/focal/g' {} \;")
+    print("Invoking '%s'" % ' '.join(cmd))
+    subprocess.check_call(cmd)
+
     # ensure that the package version is correct
     source_version = dpkg_parsechangelog(sources_dir, ['Version'])[0]
     if not source_version.startswith(pkg_version) or \
