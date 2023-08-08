@@ -138,6 +138,9 @@ def build_binarydeb(rosdistro_name, package_name, sourcepkg_dir, skip_tests=Fals
     # output package version for job description
     print("Package '%s' version: %s" % (debian_package_name, version))
 
+    cmd = ['export', 'PYTHONPATH=/opt/ros/humble/lib/python3.8/site-packages/:$PYTHONPATH']
+    subprocess.check_call(cmd, cwd=source_dir)
+
     cmd = ['apt-src', 'import', source, '--here', '--version', version]
     subprocess.check_call(cmd, cwd=source_dir, env=env)
 
