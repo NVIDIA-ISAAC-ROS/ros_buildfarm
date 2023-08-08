@@ -145,11 +145,13 @@ def build_binarydeb(rosdistro_name, package_name, sourcepkg_dir, skip_tests=Fals
     subprocess.check_call(cmd, cwd=source_dir, env=env)
 
     cmd = ['dpkg-buildpackage', '-b', '-us', '-uc']
+    cmd = 'PYTHONPATH=/opt/ros/humble/lib/python3.8/site-packages/:$PYTHONPATH ' + ' '.join(cmd)
+
     if skip_tests:
         cmd += ['-Pnocheck']
     print("Invoking '%s' in '%s'" % (' '.join(cmd), source_dir))
     try:
-        subprocess.check_call(cmd, cwd=source_dir, env=env)
+        subprocess.check_call(cmd, cwd=source_dir, shell=True, env=env)
     except subprocess.CalledProcessError:
         traceback.print_exc()
         sys.exit("""
