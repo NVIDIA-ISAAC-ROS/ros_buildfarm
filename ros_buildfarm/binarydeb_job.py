@@ -138,10 +138,12 @@ def build_binarydeb(rosdistro_name, package_name, sourcepkg_dir, skip_tests=Fals
     # output package version for job description
     print("Package '%s' version: %s" % (debian_package_name, version))
 
-    cmd = ['PYTHONPATH=/opt/ros/humble/lib/python3.8/site-packages/:$PYTHONPATH', 'apt-src', 'import', source, '--here', '--version', version]
+    env["PYTHONPATH"] = "/opt/ros/humble/lib/python3.8/site-packages/:" + env.get("PYTHONPATH", "")
+
+    cmd = ['apt-src', 'import', source, '--here', '--version', version]
     subprocess.check_call(cmd, cwd=source_dir, env=env)
 
-    cmd = ['PYTHONPATH=/opt/ros/humble/lib/python3.8/site-packages/:$PYTHONPATH', 'dpkg-buildpackage', '-b', '-us', '-uc']
+    cmd = ['dpkg-buildpackage', '-b', '-us', '-uc']
     if skip_tests:
         cmd += ['-Pnocheck']
     print("Invoking '%s' in '%s'" % (' '.join(cmd), source_dir))
