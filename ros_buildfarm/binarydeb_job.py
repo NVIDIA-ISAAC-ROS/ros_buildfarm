@@ -161,6 +161,8 @@ The traceback from this failure (just above) is printed for completeness, but yo
 You should look above `E: Building failed` in the build log for the actual cause of the failure.
 --------------------------------------------------------------------------------------------------
 """.format(' '.join(cmd)))
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 
 def _get_package_subfolders(basepath, debian_package_name):
