@@ -74,7 +74,7 @@ USER buildfarm
 ENTRYPOINT ["sh", "-c"]
 @{
 cmds = [
-    'PYTHONPATH=/tmp/ros_buildfarm:$PYTHONPATH python3 -u' +
+    'PYTHONPATH=/opt/ros/humble/lib/python3.8/site-packages:/tmp/ros_buildfarm:$PYTHONPATH python3 -u' +
     ' /tmp/ros_buildfarm/scripts/release/get_sourcedeb.py' +
     ' --rosdistro-index-url ' + rosdistro_index_url +
     ' ' + rosdistro_name +
@@ -85,14 +85,14 @@ cmds = [
 
 if append_timestamp:
     cmds.append(
-        'PYTHONPATH=/tmp/ros_buildfarm:$PYTHONPATH python3 -u' +
+        'PYTHONPATH=/opt/ros/humble/lib/python3.8/site-packages:/tmp/ros_buildfarm:$PYTHONPATH python3 -u' +
         ' /tmp/ros_buildfarm/scripts/release/append_build_timestamp.py' +
         ' ' + rosdistro_name +
         ' ' + package_name +
         ' --sourcepkg-dir ' + binarypkg_dir)
 
 cmds.append(
-    'PYTHONPATH=/tmp/ros_buildfarm:$PYTHONPATH python3 -u' +
+    'PYTHONPATH=/opt/ros/humble/lib/python3.8/site-packages:/tmp/ros_buildfarm:$PYTHONPATH python3 -u' +
     ' /tmp/ros_buildfarm/scripts/release/create_binarydeb_task_generator.py' +
     ' --rosdistro-index-url ' + rosdistro_index_url +
     ' ' + rosdistro_name +
