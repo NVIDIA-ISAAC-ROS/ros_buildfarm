@@ -56,6 +56,16 @@ def get_sources(
     print("Invoking '%s'" % ' '.join(cmd))
     subprocess.check_call(cmd)
 
+    control_file_path = f"{sources_dir}/debian/control"
+
+    with open(control_file_path, 'r') as file:
+        lines = file.readlines()
+
+    with open(control_file_path, 'w') as file:
+        for line in lines:
+            if not line.startswith("Conflicts:"):
+                file.write(line)
+
     # ensure that the package version is correct
     source_version = dpkg_parsechangelog(sources_dir, ['Version'])[0]
     if not source_version.startswith(pkg_version) or \
