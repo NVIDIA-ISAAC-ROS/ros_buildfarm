@@ -29,7 +29,10 @@ def get_run_command(indices, dependencies, dependency_versions):
     for index in indices:
       name = dependencies[index]
       cmds.append('echo "{name}: {version}"'.format(name=name, version=dependency_versions[name]))
-      names.append(name)
+      if name == "meson":
+        cmds.append("apt-get install -y python3-pip && pip3 install meson")
+      else:
+        names.append(name)
     cmds.append('python3 -u /tmp/wrapper_scripts/apt.py update-install-clean -q -y -o Debug::pkgProblemResolver=yes {names}'.format(names=' '.join(names)))
     return ' && '.join(cmds)
 }@
