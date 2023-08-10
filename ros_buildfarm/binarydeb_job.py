@@ -145,7 +145,7 @@ def build_binarydeb(rosdistro_name, package_name, sourcepkg_dir, skip_tests=Fals
     subprocess.check_call(cmd, cwd=source_dir, env=env)
 
 
-    cmd = ['dpkg-buildpackage', '-b', '-us', '-uc']
+    cmd = ['dpkg-buildpackage', '-d', '-b', '-us', '-uc']
 
     if skip_tests:
         cmd += ['-Pnocheck']
