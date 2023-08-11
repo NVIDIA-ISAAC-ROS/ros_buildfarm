@@ -21,7 +21,7 @@ def main(argv=sys.argv[1:]):
     assert len(argv) < 2
     dockerfile = argv[0] if len(argv) == 1 else 'Dockerfile'
     sys.stdout.write("Get base image name from Dockerfile '%s': " % dockerfile)
-    base_image = get_base_image_from_dockerfile(dockerfile)
+    base_image = get_base_image_from_dockerfile(dockerfile) if base_image != 'ubuntu:xenial' else 'ubuntu:focal'
     print(base_image)
 
     known_error_strings = [
