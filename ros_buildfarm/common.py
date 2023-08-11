@@ -275,7 +275,6 @@ def get_release_binary_view_prefix(rosdistro_name, release_build_name):
 
 def get_release_binary_view_name(
         rosdistro_name, release_build_name, os_name, os_code_name, arch):
-    os_code_name = get_short_os_code_name(os_code_name)
     arch = get_short_arch(arch)
     return '%s_%s%s%s' % (
         get_release_binary_view_prefix(rosdistro_name, release_build_name),
