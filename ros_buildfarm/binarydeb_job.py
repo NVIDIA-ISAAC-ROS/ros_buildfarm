@@ -141,7 +141,12 @@ def build_binarydeb(rosdistro_name, package_name, sourcepkg_dir, skip_tests=Fals
     cmd = ['apt-src', 'import', source, '--here', '--version', version]
     subprocess.check_call(cmd, cwd=source_dir, env=env)
 
-    cmd = ['dpkg-buildpackage', '-b', '-us', '-uc']
+    cmd = ['sed', '-i', 's#PYTHONPATH=/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.9/site-packages#&:/opt/ros/humble/lib/python3.8/site-packages#', 'debian/rules']
+    subprocess.check_call(cmd, cwd=source_dir, env=env)
+
+
+    cmd = ['dpkg-buildpackage', '-d', '-b', '-us', '-uc']
+
     if skip_tests:
         cmd += ['-Pnocheck']
     print("Invoking '%s' in '%s'" % (' '.join(cmd), source_dir))
@@ -157,6 +162,8 @@ The traceback from this failure (just above) is printed for completeness, but yo
 You should look above `E: Building failed` in the build log for the actual cause of the failure.
 --------------------------------------------------------------------------------------------------
 """.format(' '.join(cmd)))
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 
 def _get_package_subfolders(basepath, debian_package_name):

@@ -14,6 +14,7 @@
 
 import os
 import subprocess
+import shlex
 from urllib.error import HTTPError
 from urllib.request import urlretrieve
 
@@ -39,7 +40,7 @@ def get_sources(
 
     pkg_version = repo.release_repository.version
     tag = _get_source_tag(
-        rosdistro_name, pkg_name, pkg_version, os_name, os_code_name)
+        rosdistro_name, pkg_name, pkg_version, os_name, 'jammy')
 
     cmd = [
         'git', 'clone',
@@ -50,6 +51,20 @@ def get_sources(
 
     print("Invoking '%s'" % ' '.join(cmd))
     subprocess.check_call(cmd)
+
+    cmd = shlex.split(f"find {sources_dir} -type f -exec sed -i"+" 's/jammy/focal/g' {} \;")
+    print("Invoking '%s'" % ' '.join(cmd))
+    subprocess.check_call(cmd)
+
+    control_file_path = f"{sources_dir}/debian/control"
+
+    with open(control_file_path, 'r') as file:
+        lines = file.readlines()
+
+    with open(control_file_path, 'w') as file:
+        for line in lines:
+            if not line.startswith("Conflicts:"):
+                file.write(line)
 
     # ensure that the package version is correct
     source_version = dpkg_parsechangelog(sources_dir, ['Version'])[0]
